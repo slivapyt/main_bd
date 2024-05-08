@@ -7,6 +7,10 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
+tree = "^0.2.4"
+requests = "^2.31.0"
+configparser = "^7.0.0"
+psycopg2 = "^2.9.9"
 
 
 [build-system]
