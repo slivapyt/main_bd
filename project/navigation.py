@@ -1,48 +1,61 @@
+from prettytable import PrettyTable
+table_n = PrettyTable()
+table = PrettyTable()
 
 
 class Navigate:
-    '''status: 'c'- continue,'''
 
     def __init__(self, page):
-        self.len_page = len(page)
-        self.status = None
-        self.keyword_list = {
-            'qqq': 'qqq',
-            'ins': 'ins',
-            'see': 'see',
-            'name': 'name',
-            'next': 'next',
-            'back': 'back'}
+        self.page = page
+        self.status = True
+        self.keyword_list = (
+            'qqq', 'ins', 'see', 'name',
+            'next', 'back', 'srh', 'stop',
+            'count', 'vac', 'avg', 'high', 'key')
 
-    def allocation(self):
+    def allocation(self, old_num_comp):
         key = input()
-        try:
-            key = int(key)
-        except:
-            return self.str_navigate(key)
+        if key.isdigit():
+            return self.int_navigate(int(key) - 1)
         else:
-            return self.int_navigate(key)
+            return self.str_navigate(key, old_num_comp)
 
     def int_navigate(self, key):
-        if key <= self.len_page:
-            self.status = 'c'
-            return key, self.status, None
+        '''key - инт индекс страницы'''
+        if key <= len(self.page):
+            return key, True
         else:
-            key = 1
-            self.status = 'c'
-            return key, self.status, None
+            key = 0
+            return key, True
 
-    def str_navigate(self, key):
+    def str_navigate(self, key, old_num_comp):
+        '''key - команда, old_num_comp - индекс страницы'''
         if key.lower() in self.keyword_list:
-            self.status = 'c'
-            return 1, self.status, self.keyword_list[key]
+            if key.lower() in ('ins', 'see', 'count', 'vac', 'avg', 'high', 'key'):
+                return old_num_comp, key.lower()
+            else:
+                return 0, key.lower()
         else:
-            key = 1
-            self.status = 'c'
-            return 1, self.status, None
+            return old_num_comp, True
 
 
-while True:
-    navigate = Navigate([1, 2, 3, 4, 5, 1, 2, 3, 4, 1, 3,])
-    b = navigate.allocation()
-    print(b)
+def get_company_name():
+    table.field_names = ['HeadHunter Favorite Vacancies']
+    table.add_row(['Укажите название компании для поиска'])
+    table.add_row(['Для выход - qqq'])
+    print(table)
+    company_name = input('  ')
+    return company_name
+
+
+def table_menu():
+    table_n.field_names = [
+        'Вакансии', 'Другие компании', 'Добавить в бд', 'Поиск по тегу', 'Отмена поиска', 'Следующий список', 'Предыдущий список', 'Выход']
+    table_n.add_row([
+        'see', 'name', 'ins', 'srh',
+        'stop', 'next', 'back', 'qqq'])
+
+    return table_n
+
+
+out_table_menu = table_menu()
